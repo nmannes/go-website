@@ -1,0 +1,42 @@
+<html>
+
+<head>
+	<title>Nathan Mannes, Software Engineer</title>
+	<link id="icon" rel="icon" type="image/png" href="/n">
+
+</head>
+
+<h2>
+	Nathan Mannes, Software Engineer
+</h2>
+
+
+<script>
+
+	function setIcon(filename) {
+		var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+		link.type = 'image/png';
+		link.rel = 'icon';
+		link.href = filename;
+		document.getElementsByTagName('head')[0].appendChild(link);
+	}
+
+	function iconChange() {
+		setTimeout(function () {
+			setIcon("/m")
+		}, 1400
+		);
+		setTimeout(function () {
+			setIcon("/n")
+		}, 1400
+		);
+	}
+
+	window.onload = function () {
+		setInterval(function () {
+			iconChange();
+		}, 2800);
+	};
+</script>
+
+</html>
