@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"sync"
@@ -30,6 +31,13 @@ func (s *Stats) Process(next echo.HandlerFunc) echo.HandlerFunc {
 		status := strconv.Itoa(c.Response().Status)
 		s.Statuses[status]++
 		s.IPAddresses[c.RealIP()]++
+		fmt.Printf("%v | %v | %v | %v | %v\n",
+			time.Now().UTC(),
+			status,
+			c.RealIP(),
+			c.Request().URL.Path,
+			c.Response().Size,
+		)
 		return nil
 	}
 }
@@ -55,10 +63,6 @@ func main() {
 
 	e.GET("/resume", func(c echo.Context) error {
 		return c.Inline("mannes_resume.pdf", "Nathan's resume")
-	})
-
-	e.GET("/nm", func(c echo.Context) error {
-		return c.File("nm.gif")
 	})
 
 	e.GET("/n", func(c echo.Context) error {
