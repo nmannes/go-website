@@ -12,8 +12,9 @@ import (
 
 func NewStats() *Stats {
 	return &Stats{
-		Uptime:   time.Now().UTC(),
-		Statuses: map[string]int{},
+		Uptime:      time.Now().UTC(),
+		Statuses:    map[string]int{},
+		IPAddresses: map[string]int{},
 	}
 }
 
@@ -28,6 +29,7 @@ func (s *Stats) Process(next echo.HandlerFunc) echo.HandlerFunc {
 		s.RequestCount++
 		status := strconv.Itoa(c.Response().Status)
 		s.Statuses[status]++
+		s.IPAddresses[c.RealIP()]++
 		return nil
 	}
 }
@@ -37,6 +39,7 @@ type (
 		Uptime       time.Time      `json:"uptime"`
 		RequestCount uint64         `json:"requestCount"`
 		Statuses     map[string]int `json:"statuses"`
+		IPAddresses  map[string]int `json:"requests_by_ip_address"`
 		mutex        sync.RWMutex
 	}
 )
