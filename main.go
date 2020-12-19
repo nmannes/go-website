@@ -32,11 +32,10 @@ func (s *Stats) Process(next echo.HandlerFunc) echo.HandlerFunc {
 		s.Statuses[status]++
 		s.IPAddresses[c.RealIP()]++
 		fmt.Printf("%v | %v | %v | %v | %v\n",
-			time.Now().UTC(),
+			time.Now().UTC().Truncate(time.Millisecond),
 			status,
 			c.RealIP(),
 			c.Request().URL.Path,
-			c.Response().Size,
 		)
 		return nil
 	}
