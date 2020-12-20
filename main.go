@@ -39,10 +39,11 @@ func (s *Stats) Process(next echo.HandlerFunc) echo.HandlerFunc {
 }
 
 func log(c echo.Context, timeIn time.Time, currentTime time.Time) {
-	fmt.Printf("%v | %v | %v | %v | %v \n",
+	fmt.Printf("%v | %v | %v | %v | %v | %v \n",
 		timeIn.Format(time.RFC3339),
 		c.RealIP(),
 		c.Response().Status,
+		c.Request().Method,
 		c.Request().URL.Path,
 		currentTime.Sub(timeIn).String(),
 	)
