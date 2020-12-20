@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"sync"
@@ -68,16 +69,17 @@ func main() {
 	e.Use(s.Process)
 	e.Use(middleware.Recover())
 
-	e.GET("/resume", func(c echo.Context) error {
-		return c.Inline("mannes_resume.pdf", "Nathan's resume")
-	})
+	files := []string{
+		"mannes_resume.pdf",
+		"m.png",
+		"n.png",
+	}
 
-	e.GET("/n", func(c echo.Context) error {
-		return c.File("n.png")
-	})
-	e.GET("/m", func(c echo.Context) error {
-		return c.File("m.png")
-	})
+	for _, f := range files {
+		e.GET(fmt.Sprintf("/%v", f), func(c echo.Context) error {
+			return c.File(f)
+		})
+	}
 
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.JSONPretty(http.StatusOK, s, "   ")
