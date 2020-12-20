@@ -66,15 +66,15 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/resume", func(c echo.Context) error {
-		return c.File("mannes_resume.pdf")
+		return c.File("assets/mannes_resume.pdf")
 	})
 
 	e.GET("/n", func(c echo.Context) error {
-		return c.File("n.png")
+		return c.File("assets/n.png")
 	})
 
 	e.GET("/favicon.ico", func(c echo.Context) error {
-		return c.File("n.png")
+		return c.File("assets/n.png")
 	})
 
 	e.GET("/healthz", func(c echo.Context) error {
@@ -82,7 +82,7 @@ func main() {
 	})
 
 	e.GET("/*", func(c echo.Context) error {
-		return c.File("index.html")
+		return c.File("assets/index.html")
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
