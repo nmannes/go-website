@@ -8,6 +8,10 @@ body {
     font-family: Lucida Console, Courier New, monospace;
 }
 
+h1 {
+    padding-top: 20px
+}
+
 h2 {
     padding-top: 14px;
 }
