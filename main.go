@@ -9,8 +9,6 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-
-	"go.uber.org/zap"
 )
 
 func NewStats() *Stats {
@@ -41,14 +39,12 @@ func (s *Stats) Process(next echo.HandlerFunc) echo.HandlerFunc {
 }
 
 func log(c echo.Context, timeIn time.Time, currentTime time.Time) {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
-	logger.Info("new request",
-		zap.String("requested_at", timeIn.Format(time.RFC3339)),
-		zap.String("ip", c.RealIP()),
-		zap.Int("status", c.Response().Status),
-		zap.String("path", c.Request().URL.Path),
-		zap.String("response_time", currentTime.Sub(timeIn).String()),
+	fmt.Printf("%v | %v | %v | %v | %v \n",
+		timeIn.Format(time.RFC3339),
+		c.RealIP(),
+		c.Response().Status,
+		c.Request().URL.Path,
+		currentTime.Sub(timeIn).String(),
 	)
 }
 
@@ -69,17 +65,13 @@ func main() {
 	e.Use(s.Process)
 	e.Use(middleware.Recover())
 
-	files := []string{
-		"mannes_resume.pdf",
-		"m.png",
-		"n.png",
-	}
+	e.GET("/resume", func(c echo.Context) error {
+		return c.File("mannes_resume.pdf")
+	})
 
-	for _, f := range files {
-		e.GET(fmt.Sprintf("/%v", f), func(c echo.Context) error {
-			return c.File(f)
-		})
-	}
+	e.GET("/n", func(c echo.Context) error {
+		return c.File("n.png")
+	})
 
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.JSONPretty(http.StatusOK, s, "   ")
