@@ -51,7 +51,7 @@ func log(c echo.Context, timeIn time.Time, currentTime time.Time) {
 type (
 	Stats struct {
 		Uptime       time.Time      `json:"uptime_since"`
-		RequestCount uint64         `json:"requestCount"`
+		RequestCount uint64         `json:"request_count"`
 		Statuses     map[string]int `json:"statuses"`
 		IPAddresses  map[string]int `json:"requests_by_ip_address"`
 		mutex        sync.RWMutex
