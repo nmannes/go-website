@@ -73,6 +73,10 @@ func main() {
 		return c.File("n.png")
 	})
 
+	e.GET("/favicon.ico", func(c echo.Context) error {
+		return c.File("n.png")
+	})
+
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.JSONPretty(http.StatusOK, s, "   ")
 	})
