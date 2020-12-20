@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"sync"
@@ -9,6 +8,8 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+
+	"go.uber.org/zap"
 )
 
 func NewStats() *Stats {
@@ -22,6 +23,7 @@ func NewStats() *Stats {
 // Process is the middleware function.
 func (s *Stats) Process(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
+		timeIn := time.Now().UTC()
 		if err := next(c); err != nil {
 			c.Error(err)
 		}
@@ -31,19 +33,27 @@ func (s *Stats) Process(next echo.HandlerFunc) echo.HandlerFunc {
 		status := strconv.Itoa(c.Response().Status)
 		s.Statuses[status]++
 		s.IPAddresses[c.RealIP()]++
-		fmt.Printf("%v | %v | %v | %v | %v\n",
-			time.Now().UTC().Truncate(time.Millisecond),
-			status,
-			c.RealIP(),
-			c.Request().URL.Path,
-		)
+
+		log(c, timeIn, time.Now().UTC())
 		return nil
 	}
 }
 
+func log(c echo.Context, timeIn time.Time, currentTime time.Time) {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+	logger.Info("new request",
+		zap.String("requested_at", timeIn.String()),
+		zap.String("ip", c.RealIP()),
+		zap.Int("status", c.Response().Status),
+		zap.String("path", c.Request().URL.Path),
+		zap.String("response_time", currentTime.Sub(timeIn).String()),
+	)
+}
+
 type (
 	Stats struct {
-		Uptime       time.Time      `json:"uptime"`
+		Uptime       time.Time      `json:"uptime_since"`
 		RequestCount uint64         `json:"requestCount"`
 		Statuses     map[string]int `json:"statuses"`
 		IPAddresses  map[string]int `json:"requests_by_ip_address"`
@@ -52,11 +62,9 @@ type (
 )
 
 func main() {
-	// Echo instance
 	s := NewStats()
 	e := echo.New()
 
-	// Middleware
 	e.Use(s.Process)
 	e.Use(middleware.Recover())
 
@@ -79,6 +87,5 @@ func main() {
 		return c.File("index.html")
 	})
 
-	// Start server
 	e.Logger.Fatal(e.Start(":3000"))
 }
