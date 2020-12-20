@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -65,12 +68,14 @@ func main() {
 
 	e.Use(s.Process)
 	e.Use(middleware.Recover())
-	setRoutes(e, s)
+
+	images := setImg(e)
+	setRoutes(e, s, images)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }
 
-func setRoutes(e *echo.Echo, s *Stats) {
+func setRoutes(e *echo.Echo, s *Stats, m map[string]bool) {
 
 	e.GET("/resume", func(c echo.Context) error {
 		return c.File("assets/mannes_resume.pdf")
@@ -92,4 +97,22 @@ func setRoutes(e *echo.Echo, s *Stats) {
 		return c.File("assets/index.html")
 	})
 
+}
+
+func setImg(e *echo.Echo) map[string]bool {
+
+	files := map[string]bool{}
+
+	root := "assets/img"
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if strings.Contains(info.Name(), ".jpg") {
+			files[path] = true
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	return files
 }
