@@ -76,13 +76,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	e.
-		e.Use(s.Process)
+	e.Use(s.Process)
 	e.Use(middleware.Recover())
 
-	images := setImg(e)
-	setRoutes(e, s, images)
+	images := setImg(e, t)
+	setRoutes(e, s, images, t)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }
@@ -106,12 +104,18 @@ func setRoutes(e *echo.Echo, s *Stats, m map[ImgInfo]bool, t *template.Template)
 	})
 
 	e.GET("/*", func(c echo.Context) error {
+		var img ImgInfo
+		for image := range m {
+			img = image
+			break
+		}
+		t.Execute(c.Response().Writer, img)
 		return nil
 	})
 
 }
 
-func setImg(e *echo.Echo) map[ImgInfo]bool {
+func setImg(e *echo.Echo, t *template.Template) map[ImgInfo]bool {
 
 	files := map[ImgInfo]bool{}
 
@@ -121,10 +125,11 @@ func setImg(e *echo.Echo) map[ImgInfo]bool {
 			e.GET(path, func(c echo.Context) error {
 				return c.File(path)
 			})
+
 			sections := strings.Split(path, "/")
 			fileName := strings.Split(sections[2], ".")
 			files[ImgInfo{
-				Path:    path,
+				Path:    fmt.Sprintf("\"%v\"", path),
 				Caption: strings.ReplaceAll(fileName[0], "_", " "),
 			}] = true
 
@@ -132,7 +137,6 @@ func setImg(e *echo.Echo) map[ImgInfo]bool {
 		return nil
 	})
 	if err != nil {
-		panic(err)
 	}
 	return files
 }
