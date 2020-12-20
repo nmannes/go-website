@@ -5,5 +5,13 @@ html {
 body {
     margin-left: 25%;
     margin-right: 25%;
-    font-family: "Lucida Console, Courier New, monospace;";
+    font-family: Lucida Console, Courier New, monospace;
+}
+
+h2 {
+    padding-top: 14px;
+}
+
+li {
+    padding-top: 10px;
 }
