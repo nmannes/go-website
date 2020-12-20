@@ -99,6 +99,10 @@ func setRoutes(e *echo.Echo, s *Stats, m map[ImgInfo]bool, t *template.Template)
 		return c.File("assets/n.png")
 	})
 
+	e.GET("/style.css", func(c echo.Context) error {
+		return c.File("assets/style.css")
+	})
+
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.JSONPretty(http.StatusOK, s, "   ")
 	})
