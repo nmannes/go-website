@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"text/template"
 	"time"
 
 	"github.com/labstack/echo"
@@ -60,13 +61,24 @@ type (
 		IPAddresses  map[string]int `json:"requests_by_ip_address"`
 		mutex        sync.RWMutex
 	}
+
+	ImgInfo struct {
+		Path    string
+		Caption string
+	}
 )
 
 func main() {
 	e := echo.New()
 	s := NewStats()
 
-	e.Use(s.Process)
+	t, err := template.ParseFiles("assets/index.html")
+	if err != nil {
+		panic(err)
+	}
+
+	e.
+		e.Use(s.Process)
 	e.Use(middleware.Recover())
 
 	images := setImg(e)
@@ -75,7 +87,7 @@ func main() {
 	e.Logger.Fatal(e.Start(":3000"))
 }
 
-func setRoutes(e *echo.Echo, s *Stats, m map[string]bool) {
+func setRoutes(e *echo.Echo, s *Stats, m map[ImgInfo]bool, t *template.Template) {
 
 	e.GET("/resume", func(c echo.Context) error {
 		return c.File("assets/mannes_resume.pdf")
@@ -94,25 +106,33 @@ func setRoutes(e *echo.Echo, s *Stats, m map[string]bool) {
 	})
 
 	e.GET("/*", func(c echo.Context) error {
-		return c.File("assets/index.html")
+		return nil
 	})
 
 }
 
-func setImg(e *echo.Echo) map[string]bool {
+func setImg(e *echo.Echo) map[ImgInfo]bool {
 
-	files := map[string]bool{}
+	files := map[ImgInfo]bool{}
 
 	root := "assets/img"
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if strings.Contains(info.Name(), ".jpg") {
-			files[path] = true
+			e.GET(path, func(c echo.Context) error {
+				return c.File(path)
+			})
+			sections := strings.Split(path, "/")
+			fileName := strings.Split(sections[2], ".")
+			files[ImgInfo{
+				Path:    path,
+				Caption: strings.ReplaceAll(fileName[0], "_", " "),
+			}] = true
+
 		}
 		return nil
 	})
 	if err != nil {
 		panic(err)
 	}
-
 	return files
 }
