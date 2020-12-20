@@ -5,7 +5,11 @@ html {
 body {
     margin-left: 20%;
     margin-right: 20%;
-    font-family: Lucida Console, Courier New, monospace;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+li {
+    padding-top: 10px;
 }
 
 h1 {
@@ -14,8 +18,4 @@ h1 {
 
 h2 {
     padding-top: 14px;
-}
-
-li {
-    padding-top: 10px;
 }
