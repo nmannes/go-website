@@ -44,7 +44,7 @@ func log(c echo.Context, timeIn time.Time, currentTime time.Time) {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 	logger.Info("new request",
-		zap.String("requested_at", timeIn.String()),
+		zap.String("requested_at", timeIn.Format(time.RFC3339)),
 		zap.String("ip", c.RealIP()),
 		zap.Int("status", c.Response().Status),
 		zap.String("path", c.Request().URL.Path),
