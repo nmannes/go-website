@@ -60,11 +60,17 @@ type (
 )
 
 func main() {
-	s := NewStats()
 	e := echo.New()
+	s := NewStats()
 
 	e.Use(s.Process)
 	e.Use(middleware.Recover())
+	setRoutes(e, s)
+
+	e.Logger.Fatal(e.Start(":3000"))
+}
+
+func setRoutes(e *echo.Echo, s *Stats) {
 
 	e.GET("/resume", func(c echo.Context) error {
 		return c.File("assets/mannes_resume.pdf")
@@ -86,5 +92,4 @@ func main() {
 		return c.File("assets/index.html")
 	})
 
-	e.Logger.Fatal(e.Start(":3000"))
 }
