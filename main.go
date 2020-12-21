@@ -72,20 +72,18 @@ func main() {
 	e := echo.New()
 	s := NewStats()
 
-	t, err := template.ParseFiles("assets/index.html")
-	if err != nil {
-		panic(err)
-	}
+	masterTemplate, _ = template.ParseFiles("assets/template.html")
+
 	e.Use(s.Process)
 	e.Use(middleware.Recover())
 
-	images := setImg(e, t)
-	setRoutes(e, s, images, t)
+	setImg(e)
+	setRoutes(e, s)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }
 
-func setRoutes(e *echo.Echo, s *Stats, m map[ImgInfo]bool, t *template.Template) {
+func setRoutes(e *echo.Echo, s *Stats) {
 
 	e.GET("/resume", func(c echo.Context) error {
 		return c.File("assets/mannes_resume.pdf")
@@ -107,22 +105,11 @@ func setRoutes(e *echo.Echo, s *Stats, m map[ImgInfo]bool, t *template.Template)
 		return c.JSONPretty(http.StatusOK, s, "   ")
 	})
 
-	e.GET("/*", func(c echo.Context) error {
-		var img ImgInfo
-		for image := range m {
-			img = image
-			break
-		}
-		t.Execute(c.Response().Writer, img)
-		return nil
-	})
+	e.GET("/*", Route)
 
 }
 
-func setImg(e *echo.Echo, t *template.Template) map[ImgInfo]bool {
-
-	files := map[ImgInfo]bool{}
-
+func setImg(e *echo.Echo) error {
 	root := "assets/img"
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if strings.Contains(info.Name(), ".jpg") {
@@ -132,15 +119,15 @@ func setImg(e *echo.Echo, t *template.Template) map[ImgInfo]bool {
 
 			sections := strings.Split(path, "/")
 			fileName := strings.Split(sections[2], ".")
-			files[ImgInfo{
+			Images = append(Images, ImgInfo{
 				Path:    fmt.Sprintf("\"%v\"", path),
 				Caption: strings.ReplaceAll(fileName[0], "_", " "),
-			}] = true
+			})
 
 		}
 		return nil
 	})
 	if err != nil {
 	}
-	return files
+	return nil
 }
