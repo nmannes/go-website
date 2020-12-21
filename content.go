@@ -2,6 +2,7 @@ package main
 
 import (
 	"io"
+	"math/rand"
 	"text/template"
 
 	"github.com/labstack/echo"
@@ -101,7 +102,7 @@ func Route(e echo.Context) error {
 
 	return RenderPage(e.Response().Writer, masterTemplate, Page{
 		PageContent: pageContent,
-		Favicon:     "/n",
+		Favicon:     favicons[rand.Intn(len(favicons))],
 	})
 }
 
