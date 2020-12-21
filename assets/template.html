@@ -27,6 +27,16 @@
 
         <div>
 
+            <figure>
+                <img src={{.Path}} height="400px" width="400px">
+                <figcaption>{{.Caption}}. (you can refresh for other photos)</figcaption>
+            </figure>
+
+        </div>
+
+
+        <div>
+
             {{if .ShowSubcontent}}
             <p>{{.Subcontent}} </p>
             {{else}} {{end}}

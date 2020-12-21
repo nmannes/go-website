@@ -105,6 +105,8 @@ func setRoutes(e *echo.Echo, s *Stats) {
 		return c.JSONPretty(http.StatusOK, s, "   ")
 	})
 
+	setImg(e)
+
 	e.GET("/*", Route)
 
 }

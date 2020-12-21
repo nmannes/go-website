@@ -102,6 +102,7 @@ func Route(e echo.Context) error {
 
 	return RenderPage(e.Response().Writer, masterTemplate, Page{
 		PageContent: pageContent,
+		ImgInfo:     Images[rand.Intn(len(Images))],
 		Favicon:     favicons[rand.Intn(len(favicons))],
 	})
 }
