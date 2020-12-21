@@ -93,8 +93,8 @@ func setRoutes(e *echo.Echo, s *Stats) {
 		return c.File("assets/n.png")
 	})
 
-	e.GET("/favicon.ico", func(c echo.Context) error {
-		return c.File("assets/n.png")
+	e.GET("/m", func(c echo.Context) error {
+		return c.File("assets/m.png")
 	})
 
 	e.GET("/style.css", func(c echo.Context) error {
