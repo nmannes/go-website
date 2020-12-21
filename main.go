@@ -77,7 +77,7 @@ func main() {
 	e.Use(s.Process)
 	e.Use(middleware.Recover())
 
-	setImg(e)
+	//setImg(e)
 	setRoutes(e, s)
 
 	e.Logger.Fatal(e.Start(":3000"))

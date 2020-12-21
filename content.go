@@ -29,7 +29,7 @@ var pages = map[string]PageContent{
 		ShowSubcontent: true,
 		Subcontent:     `Hi, my name is Nathan Mannes. I write <a href="https://golang.org">Go</a> at <a href="https://sezzle.com">Sezzle</a>. I grew up in New York City. I live in Minneapolis.`,
 		Content: []string{
-			`My most relevant tech work experience is detailed on my <a href="/resume">resume</a>`,
+			`My tech work experience is detailed on my <a href="/resume">resume</a>`,
 			`I graduated from Carleton College in 2019 with a degree in Computer Science`,
 			`I like gaming (smash, mostly), tennis, musical theater, writing, non-fiction, and programming computers.`,
 		},
