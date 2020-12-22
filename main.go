@@ -107,14 +107,6 @@ func setRoutes(e *echo.Echo, s *Stats) {
 
 func setIcons(e *echo.Echo) error {
 
-	e.GET("/n", func(c echo.Context) error {
-		return c.File("assets/n.png")
-	})
-
-	e.GET("/m", func(c echo.Context) error {
-		return c.File("assets/m.png")
-	})
-
 	e.GET("/favicon.ico", func(c echo.Context) error {
 		if rand.Intn(2) == 0 {
 			return c.File("assets/n.png")
