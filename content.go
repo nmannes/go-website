@@ -70,7 +70,7 @@ var pages = map[string]PageContent{
 
 			`September 11th, 2019 I start my second legit tech job at <a href="https://sezzle.com">Sezzle</a>`,
 
-			`October 8th, 2019 I begin a tradition of bowling every Tuesday night with a few of my friends at 10PM <a href="https://www.bryantlakebowl.com">my local bowling alley</a>`,
+			`October 8th, 2019 I begin a tradition of bowling every Tuesday night with a few of my friends at <a href="https://www.bryantlakebowl.com">my local bowling alley</a>`,
 
 			`Bowling night is on hiatus as of March 10th, 2020`,
 		},
@@ -79,6 +79,7 @@ var pages = map[string]PageContent{
 
 		Subhead: "links",
 		Content: []string{
+			`<a href="/resume">resume</a>`,
 			`<a href="https://github.com/nmannes">github</a>`,
 			`<a href="https://www.goodreads.com/user/show/48641482-nathan-mannes">goodreads</a>`,
 			`<a href="https://linkedin.com/in/nathan-mannes">linkedin</a>`,
