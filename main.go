@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -89,6 +90,23 @@ func setRoutes(e *echo.Echo, s *Stats) {
 		return c.File("assets/mannes_resume.pdf")
 	})
 
+	e.GET("/style.css", func(c echo.Context) error {
+		return c.File("assets/style.css")
+	})
+
+	e.GET("/healthz", func(c echo.Context) error {
+		return c.JSONPretty(http.StatusOK, s, "\t")
+	})
+
+	setIcons(e)
+	setImg(e)
+
+	e.GET("/*", Route)
+
+}
+
+func setIcons(e *echo.Echo) error {
+
 	e.GET("/n", func(c echo.Context) error {
 		return c.File("assets/n.png")
 	})
@@ -97,18 +115,14 @@ func setRoutes(e *echo.Echo, s *Stats) {
 		return c.File("assets/m.png")
 	})
 
-	e.GET("/style.css", func(c echo.Context) error {
-		return c.File("assets/style.css")
+	e.GET("/favicon.ico", func(c echo.Context) error {
+		if rand.Intn(2) == 0 {
+			return c.File("assets/n.png")
+		}
+		return c.File("assets/m.png")
 	})
 
-	e.GET("/healthz", func(c echo.Context) error {
-		return c.JSONPretty(http.StatusOK, s, "   ")
-	})
-
-	setImg(e)
-
-	e.GET("/*", Route)
-
+	return nil
 }
 
 func setImg(e *echo.Echo) error {

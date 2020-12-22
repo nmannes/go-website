@@ -82,6 +82,7 @@ var pages = map[string]PageContent{
 			`<a href="https://github.com/nmannes">github</a>`,
 			`<a href="https://www.goodreads.com/user/show/48641482-nathan-mannes">goodreads</a>`,
 			`<a href="https://linkedin.com/in/nathan-mannes">linkedin</a>`,
+			`<a href="https://github.com/nmannes/go-website">the code for this website</a>`,
 		},
 	},
 }
