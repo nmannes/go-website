@@ -114,7 +114,8 @@ func setRoutes(e *echo.Echo, s *Stats) {
 func setImg(e *echo.Echo) error {
 	root := "assets/img"
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if strings.Contains(info.Name(), ".jpg") {
+		if strings.Contains(info.Name(), ".jpg") ||
+			strings.Contains(info.Name(), ".png") {
 			e.GET(path, func(c echo.Context) error {
 				return c.File(path)
 			})
