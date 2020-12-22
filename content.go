@@ -87,11 +87,6 @@ var pages = map[string]PageContent{
 	},
 }
 
-var favicons = []string{
-	"/n",
-	"/m",
-}
-
 func Route(e echo.Context) error {
 
 	path := e.Request().URL.Path
