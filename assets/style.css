@@ -26,12 +26,11 @@ figure {
     border-top: 2px solid black;
     margin-top: 75px;
     padding-right: 40px;
-    padding-top: 50px;
+    padding-top: 70px;
 }
 
 li {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 10px;
 }
 
 h1 {
