@@ -96,6 +96,7 @@ func setRoutes(e *echo.Echo, s *Stats) {
 		return c.JSONPretty(http.StatusOK, s, "\t")
 	})
 
+	setResume(e)
 	setIcons(e)
 	setImg(e)
 
