@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"os"
@@ -66,6 +67,7 @@ type (
 	ImgInfo struct {
 		Path    string
 		Caption string
+		Bytes   []byte
 	}
 )
 
@@ -122,21 +124,31 @@ func setImg(e *echo.Echo) error {
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if strings.Contains(info.Name(), ".jpg") ||
 			strings.Contains(info.Name(), ".png") {
-			e.GET(path, func(c echo.Context) error {
-				return c.File(path)
-			})
+			fileContent, err := ioutil.ReadFile(path)
+			if err != nil {
+				return err
+			}
 
 			sections := strings.Split(path, "/")
 			fileName := strings.Split(sections[2], ".")
-			Images = append(Images, ImgInfo{
+			imageInfo := ImgInfo{
 				Path:    fmt.Sprintf("\"%v\"", path),
 				Caption: strings.ReplaceAll(fileName[0], "_", " "),
+				Bytes:   fileContent,
+			}
+			Images = append(Images, imageInfo)
+
+			e.GET(path, func(c echo.Context) error {
+				return c.Blob(http.StatusOK, http.DetectContentType(fileContent), fileContent)
 			})
 
 		}
 		return nil
 	})
+
 	if err != nil {
+		return err
 	}
+
 	return nil
 }
