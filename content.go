@@ -30,7 +30,7 @@ var pages = map[string]PageContent{
 		Content: []string{
 			`My tech work experience is detailed on my <a href="/resume">resume</a>`,
 			`I graduated from Carleton College in 2019 with a degree in Computer Science`,
-			`I like gaming (smash, mostly), tennis, musical theater, writing, non-fiction, and programming computers.`,
+			`I like programming computers, ultimate frisbee, tennis, reading non-fiction, and other stuff too.`,
 		},
 	},
 	"/news": {
