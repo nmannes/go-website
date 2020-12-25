@@ -109,11 +109,24 @@ func setRoutes(e *echo.Echo, s *Stats) {
 
 func setIcons(e *echo.Echo) error {
 
+	mFile, err := ioutil.ReadFile("assets/m.png")
+	if err != nil {
+		return err
+	}
+
+	nFile, err := ioutil.ReadFile("assets/n.png")
+	if err != nil {
+		return err
+	}
+
 	e.GET("/favicon.ico", func(c echo.Context) error {
+		fileReturn := mFile
 		if rand.Intn(2) == 0 {
-			return c.File("assets/n.png")
+			fileReturn = nFile
 		}
-		return c.File("assets/m.png")
+
+		return c.Blob(http.StatusOK, http.DetectContentType(fileReturn), fileReturn)
+
 	})
 
 	return nil
