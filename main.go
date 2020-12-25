@@ -126,7 +126,6 @@ func setIcons(e *echo.Echo) error {
 		}
 
 		return c.Blob(http.StatusOK, http.DetectContentType(fileReturn), fileReturn)
-
 	})
 
 	return nil
