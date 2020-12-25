@@ -88,10 +88,6 @@ func main() {
 
 func setRoutes(e *echo.Echo, s *Stats) {
 
-	e.GET("/resume", func(c echo.Context) error {
-		return c.File("assets/mannes_resume.pdf")
-	})
-
 	e.GET("/style.css", func(c echo.Context) error {
 		return c.File("assets/style.css")
 	})
@@ -105,6 +101,23 @@ func setRoutes(e *echo.Echo, s *Stats) {
 
 	e.GET("/*", Route)
 
+}
+
+func setResume(e *echo.Echo) error {
+	resume, err := ioutil.ReadFile("assets/mannes_resume.pdf")
+	if err != nil {
+		return err
+	}
+
+	e.GET("/resume", func(c echo.Context) error {
+		return c.Blob(
+			http.StatusOK,
+			http.DetectContentType(resume),
+			resume,
+		)
+	})
+
+	return nil
 }
 
 func setIcons(e *echo.Echo) error {
@@ -125,7 +138,11 @@ func setIcons(e *echo.Echo) error {
 			fileReturn = nFile
 		}
 
-		return c.Blob(http.StatusOK, http.DetectContentType(fileReturn), fileReturn)
+		return c.Blob(
+			http.StatusOK,
+			http.DetectContentType(fileReturn),
+			fileReturn,
+		)
 	})
 
 	return nil
@@ -151,7 +168,11 @@ func setImg(e *echo.Echo) error {
 			Images = append(Images, imageInfo)
 
 			e.GET(path, func(c echo.Context) error {
-				return c.Blob(http.StatusOK, http.DetectContentType(fileContent), fileContent)
+				return c.Blob(
+					http.StatusOK,
+					http.DetectContentType(fileContent),
+					fileContent,
+				)
 			})
 
 		}
