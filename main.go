@@ -81,7 +81,7 @@ func main() {
 	//setImg(e)
 	setRoutes(e, s)
 
-	e.Logger.Fatal(e.Start(":3000"))
+	e.Logger.Fatal(e.Start(":8000"))
 }
 
 func setRoutes(e *echo.Echo, s *Stats) {
