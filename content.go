@@ -78,7 +78,7 @@ var pages = map[string]PageContent{
 	},
 	"/links": {
 
-		Subhead: "links",
+		Subhead: "Links to other info",
 		Content: []string{
 			`<a href="/resume">resume</a>`,
 			`<a href="https://github.com/nmannes">github</a>`,
