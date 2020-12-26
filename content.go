@@ -21,7 +21,9 @@ type PageContent struct {
 }
 
 var masterTemplate *template.Template
-var Images = []ImgInfo{}
+
+var images = []ImgInfo{}
+
 var pages = map[string]PageContent{
 	"/about": {
 		Subhead:        "About",
@@ -98,7 +100,7 @@ func Route(e echo.Context) error {
 
 	return RenderPage(e.Response().Writer, masterTemplate, Page{
 		PageContent: pageContent,
-		ImgInfo:     Images[rand.Intn(len(Images))],
+		ImgInfo:     images[rand.Intn(len(images))],
 	})
 }
 

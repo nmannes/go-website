@@ -157,7 +157,7 @@ func setImg(e *echo.Echo) error {
 				Path:    fmt.Sprintf("\"%v\"", path),
 				Caption: strings.ReplaceAll(fileName[0], "_", " "),
 			}
-			Images = append(Images, imageInfo)
+			images = append(images, imageInfo)
 
 			serveFileWithCache(e, path, path)
 
