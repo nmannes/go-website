@@ -67,7 +67,6 @@ type (
 	ImgInfo struct {
 		Path    string
 		Caption string
-		Bytes   []byte
 	}
 )
 
@@ -86,39 +85,37 @@ func main() {
 	e.Logger.Fatal(e.Start(":8000"))
 }
 
-func setRoutes(e *echo.Echo, s *Stats) {
+func serveFileWithCache(e *echo.Echo, pathToFile, route string) error {
+	f, err := ioutil.ReadFile(pathToFile)
+	if err != nil {
+		return err
+	}
 
-	e.GET("/style.css", func(c echo.Context) error {
-		return c.File("assets/style.css")
+	e.GET(route, func(c echo.Context) error {
+		return c.Blob(
+			http.StatusOK,
+			http.DetectContentType(f),
+			f,
+		)
 	})
+
+	return nil
+}
+
+func setRoutes(e *echo.Echo, s *Stats) {
 
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.JSONPretty(http.StatusOK, s, "\t")
 	})
 
-	setResume(e)
+	serveFileWithCache(e, "assets/style.css", "/style")
+	serveFileWithCache(e, "assets/mannes_resume.pdf", "/resume")
+
 	setIcons(e)
 	setImg(e)
 
 	e.GET("/*", Route)
 
-}
-
-func setResume(e *echo.Echo) error {
-	resume, err := ioutil.ReadFile("assets/mannes_resume.pdf")
-	if err != nil {
-		return err
-	}
-
-	e.GET("/resume", func(c echo.Context) error {
-		return c.Blob(
-			http.StatusOK,
-			http.DetectContentType(resume),
-			resume,
-		)
-	})
-
-	return nil
 }
 
 func setIcons(e *echo.Echo) error {
@@ -154,27 +151,16 @@ func setImg(e *echo.Echo) error {
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if strings.Contains(info.Name(), ".jpg") ||
 			strings.Contains(info.Name(), ".png") {
-			fileContent, err := ioutil.ReadFile(path)
-			if err != nil {
-				return err
-			}
 
 			sections := strings.Split(path, "/")
 			fileName := strings.Split(sections[2], ".")
 			imageInfo := ImgInfo{
 				Path:    fmt.Sprintf("\"%v\"", path),
 				Caption: strings.ReplaceAll(fileName[0], "_", " "),
-				Bytes:   fileContent,
 			}
 			Images = append(Images, imageInfo)
 
-			e.GET(path, func(c echo.Context) error {
-				return c.Blob(
-					http.StatusOK,
-					http.DetectContentType(fileContent),
-					fileContent,
-				)
-			})
+			serveFileWithCache(e, path, path)
 
 		}
 		return nil
