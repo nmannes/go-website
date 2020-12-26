@@ -72,15 +72,10 @@ type (
 
 func main() {
 	e := echo.New()
-	s := NewStats()
 
 	masterTemplate, _ = template.ParseFiles("assets/template.html")
 
-	e.Use(s.Process)
-	e.Use(middleware.Recover())
-
-	//setImg(e)
-	setRoutes(e, s)
+	setRoutes(e)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }
@@ -102,7 +97,11 @@ func serveFileWithCache(e *echo.Echo, pathToFile, route string) error {
 	return nil
 }
 
-func setRoutes(e *echo.Echo, s *Stats) {
+func setRoutes(e *echo.Echo) {
+	s := NewStats()
+
+	e.Use(s.Process)
+	e.Use(middleware.Recover())
 
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.JSONPretty(http.StatusOK, s, "\t")
