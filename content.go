@@ -100,7 +100,9 @@ func Route(e echo.Context) error {
 
 	return RenderPage(e.Response().Writer, masterTemplate, Page{
 		PageContent: pageContent,
-		ImgInfo:     images[rand.Intn(len(images))],
+
+		// TODO: make it so that you dont' get the same image twice in a row from the rng
+		ImgInfo: images[rand.Intn(len(images))],
 	})
 }
 
