@@ -73,7 +73,11 @@ var pages = map[string]PageContent{
 
 			`October 8th, 2019 I begin a tradition of bowling every Tuesday night with a few of my friends at <a href="https://www.bryantlakebowl.com">my local bowling alley</a>`,
 
+			`In February, to occupy time at home, I learn how to make pierogies using <a href="https://www.kingarthurbaking.com/recipes/homemade-pierogi-recipe">this recipe</a>`,
+
 			`Bowling night is on hiatus as of March 10th, 2020`,
+
+			`My dad made a video of me making pierogies which can be found <a href="https://www.youtube.com/watch?v=QA0kvDKreZc">here</a>`,
 		},
 	},
 	"/links": {
