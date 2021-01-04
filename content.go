@@ -77,7 +77,7 @@ var pages = map[string]PageContent{
 
 			`Bowling night is on hiatus as of March 10th, 2020`,
 
-			`My dad made a video of me making pierogies which can be found <a href="https://www.youtube.com/watch?v=QA0kvDKreZc">here</a>`,
+			`To celebrate the new year (and so he can practice his video editing skills), my dad releases a <a href="https://www.youtube.com/watch?v=QA0kvDKreZc">video of me making pierogies</a>`,
 		},
 	},
 	"/links": {
